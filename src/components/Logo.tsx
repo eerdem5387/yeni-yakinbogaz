@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const LOGO_ASPECT = 511 / 763;
+const LOGO_ASPECT = 520 / 771;
 
 type LogoProps = {
   height?: number;
@@ -13,7 +13,7 @@ export function Logo({ height = 36, className = "", priority = false }: LogoProp
 
   return (
     <Image
-      src="/logo.png"
+      src="/logo.png?v=2"
       alt="Yakın Boğaz"
       width={width}
       height={height}

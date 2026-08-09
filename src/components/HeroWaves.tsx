@@ -2,58 +2,36 @@ export function HeroWaves() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
       <div
-        className="mist absolute -left-[10%] top-[-18%] h-[55%] w-[70%] rounded-full opacity-80"
+        className="absolute inset-0"
         style={{
-          background:
-            "radial-gradient(circle at 40% 40%, rgba(127, 180, 191, 0.55), transparent 68%)",
-        }}
-      />
-      <div
-        className="mist absolute right-[-12%] top-[8%] h-[48%] w-[58%] rounded-full opacity-70"
-        style={{
-          background:
-            "radial-gradient(circle at 50% 50%, rgba(207, 224, 228, 0.7), transparent 70%)",
-          animationDelay: "2s",
-        }}
-      />
-      <div
-        className="absolute inset-x-0 bottom-0 h-[58%]"
-        style={{
-          background:
-            "linear-gradient(180deg, transparent 0%, rgba(23, 105, 120, 0.18) 28%, rgba(11, 58, 69, 0.88) 100%)",
+          background: `
+            radial-gradient(ellipse 80% 55% at 18% 12%, rgba(127, 180, 191, 0.42), transparent 70%),
+            radial-gradient(ellipse 70% 50% at 88% 22%, rgba(207, 224, 228, 0.55), transparent 72%),
+            linear-gradient(180deg, #dce8ec 0%, #e7eef1 42%, #c5d8de 68%, #0b3a45 100%)
+          `,
         }}
       />
 
       <svg
-        className="absolute inset-x-0 bottom-0 h-[46%] w-[140%] -translate-x-[12%]"
-        viewBox="0 0 1440 420"
+        className="absolute inset-x-0 bottom-0 h-[42%] w-full"
+        viewBox="0 0 1440 320"
         preserveAspectRatio="none"
       >
-        <g className="wave-path-slow origin-center">
-          <path
-            d="M0 220 C180 160 280 300 480 240 C680 180 780 120 980 190 C1180 260 1280 210 1440 170 L1440 420 L0 420 Z"
-            fill="rgba(23, 105, 120, 0.35)"
-          />
-        </g>
-        <g className="wave-path origin-center">
-          <path
-            d="M0 250 C220 190 340 320 540 260 C740 200 860 150 1040 220 C1220 290 1320 240 1440 210 L1440 420 L0 420 Z"
-            fill="rgba(11, 58, 69, 0.72)"
-          />
-        </g>
         <path
-          d="M0 300 C240 250 360 340 560 300 C760 260 900 220 1100 270 C1300 320 1360 290 1440 270 L1440 420 L0 420 Z"
-          fill="rgba(11, 58, 69, 0.95)"
+          className="wave-path-slow origin-center"
+          d="M0 180 C240 120 360 230 600 170 C840 110 980 70 1200 130 C1320 160 1380 150 1440 140 L1440 320 L0 320 Z"
+          fill="rgba(23, 105, 120, 0.28)"
+        />
+        <path
+          className="wave-path origin-center"
+          d="M0 210 C220 160 380 250 620 200 C860 150 1020 120 1240 180 C1340 205 1400 190 1440 180 L1440 320 L0 320 Z"
+          fill="rgba(11, 58, 69, 0.72)"
+        />
+        <path
+          d="M0 245 C260 210 420 275 680 240 C940 205 1100 195 1300 235 C1380 250 1420 245 1440 240 L1440 320 L0 320 Z"
+          fill="#0b3a45"
         />
       </svg>
-
-      <div
-        className="absolute inset-x-0 bottom-0 h-32"
-        style={{
-          background:
-            "linear-gradient(180deg, transparent, rgba(11, 58, 69, 0.35))",
-        }}
-      />
     </div>
   );
 }

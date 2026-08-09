@@ -3,7 +3,6 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { HeroWaves } from "./HeroWaves";
-import { Logo } from "./Logo";
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
@@ -36,10 +35,6 @@ export function Hero() {
             },
           }}
         >
-          <motion.div variants={item} className="mb-6">
-            <Logo height={72} priority />
-          </motion.div>
-
           <motion.p
             variants={item}
             className="display mb-4 text-[clamp(2.8rem,8vw,5.6rem)] font-semibold leading-[0.92] text-ink"

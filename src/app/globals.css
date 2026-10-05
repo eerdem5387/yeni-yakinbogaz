@@ -166,4 +166,14 @@
   .link-arrow svg {
     transition: none;
   }
+
+  .scroll-drift,
+  .fall-square {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .fall-passer {
+    display: none !important;
+  }
 }

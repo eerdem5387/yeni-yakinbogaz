@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Checker, MetaRow } from "@/components/site/Chrome";
+import { StoreBadges } from "@/components/site/StoreBadges";
 import { tafys } from "@/content/tafys";
 
 export const metadata: Metadata = {
@@ -64,6 +65,11 @@ export default function TafysPage() {
           aria-hidden
         />
         <div className="container relative">
+          <img
+            src="/tafys/logo.png"
+            alt="TAFYS"
+            className="mb-8 h-14 w-auto brightness-0 invert"
+          />
           <p className="kicker">{tafys.kicker}</p>
           <h1 className="metal mt-4 text-[clamp(3.4rem,10vw,8rem)] leading-[0.88] font-semibold tracking-[-0.06em]">
             {tafys.name}
@@ -100,6 +106,11 @@ export default function TafysPage() {
                 <p className="kicker">{item.tag}</p>
                 <h3 className="mt-4 text-2xl font-medium tracking-[-0.03em]">{item.title}</h3>
                 <p className="mt-3 leading-relaxed text-ink/70">{item.text}</p>
+                <StoreBadges
+                  name={`TAFYS ${item.title}`}
+                  appStore={item.appStore}
+                  playStore={item.playStore}
+                />
               </article>
             ))}
           </div>

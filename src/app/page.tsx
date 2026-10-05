@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { MetaRow } from "@/components/site/Chrome";
 import { Drift, ScrollChecker, ScrollStage } from "@/components/site/ScrollMotion";
+import { StoreBadges } from "@/components/site/StoreBadges";
 import { projects } from "@/content/site";
 import { tafys } from "@/content/tafys";
 import { ybai } from "@/content/yakin-bogaz-ai";
@@ -193,6 +194,11 @@ export default function Home() {
       <section className="overflow-x-clip bg-bg py-20 md:py-28">
         <div className="container">
           <Drift shift={20}>
+            <img
+              src="/tafys/logo.png"
+              alt="TAFYS"
+              className="mb-8 h-12 w-auto brightness-0 invert"
+            />
             <MetaRow index="04" label={tafys.name} />
           </Drift>
           <Drift shift={24}>
@@ -219,6 +225,12 @@ export default function Home() {
                 <p className="text-sm tracking-[0.14em] text-muted uppercase">{item.tag}</p>
                 <h3 className="mt-4 text-2xl font-medium tracking-[-0.03em]">{item.title}</h3>
                 <p className="mt-3 leading-relaxed text-paper/70">{item.text}</p>
+                <StoreBadges
+                  name={`TAFYS ${item.title}`}
+                  appStore={item.appStore}
+                  playStore={item.playStore}
+                  onDark
+                />
               </Drift>
             ))}
           </ul>

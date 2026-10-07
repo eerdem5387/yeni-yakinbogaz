@@ -2,13 +2,13 @@
 
 import {
   motion,
+  useReducedMotion,
   useScroll,
   useSpring,
-  useTransform,
   type MotionValue,
   type UseScrollOptions,
 } from "framer-motion";
-import { createContext, useContext, useRef, type ReactNode, type RefObject } from "react";
+import { createContext, useEffect, useRef, useState, type ReactNode } from "react";
 
 const Progress = createContext<MotionValue<number> | null>(null);
 
@@ -43,10 +43,6 @@ export function ScrollStage({
 export function Drift({
   children,
   className,
-  shift = 36,
-  axis = "right",
-  arrive = false,
-  delay = 0,
   as = "div",
 }: {
   children: ReactNode;
@@ -57,62 +53,9 @@ export function Drift({
   delay?: number;
   as?: "div" | "li";
 }) {
-  const parent = useContext(Progress);
-  const divRef = useRef<HTMLDivElement>(null);
-  const liRef = useRef<HTMLLIElement>(null);
-  const local = useScroll({
-    target: parent ? undefined : ((as === "li" ? liRef : divRef) as RefObject<HTMLElement | null>),
-    offset: ["start 0.92", "end 0.08"],
-  });
-  const raw = parent ?? local.scrollYProgress;
-  const sprung = useSpring(raw, spring);
-  const progress = parent ? raw : sprung;
-  const along = useTransform(
-    progress,
-    arrive ? [0, 1] : [0, 0.38, 1],
-    arrive ? [0, shift * 0.55] : [-shift, 0, shift * 0.4],
-  );
-  const scrollStyle = axis === "down" ? { y: along } : { x: along };
-  const entrance = arrive
-    ? {
-        initial: axis === "down" ? { y: -shift } : { x: -shift },
-        animate: axis === "down" ? { y: 0 } : { x: 0 },
-        transition: { duration: 1.05, delay, ease: [0.16, 1, 0.3, 1] as const },
-      }
-    : {};
-
-  if (as === "li") {
-    return (
-      <motion.li
-        ref={parent ? undefined : liRef}
-        className={`scroll-drift ${className ?? ""}`}
-        style={scrollStyle}
-        {...entrance}
-      >
-        {children}
-      </motion.li>
-    );
-  }
-
-  if (arrive) {
-    return (
-      <motion.div className={`scroll-drift ${className ?? ""}`} style={scrollStyle}>
-        <motion.div className="scroll-drift" {...entrance}>
-          {children}
-        </motion.div>
-      </motion.div>
-    );
-  }
-
-  return (
-    <motion.div
-      ref={parent ? undefined : divRef}
-      className={`scroll-drift ${className ?? ""}`}
-      style={scrollStyle}
-    >
-      {children}
-    </motion.div>
-  );
+  if (as === "li") return <li className={className}>{children}</li>;
+  if (!className) return children;
+  return <div className={className}>{children}</div>;
 }
 
 const checkerSteps = [1, 2, 2, 1, 0, 2, 3, 1, 2, 0, 1, 3, 2, 1, 0, 2];
@@ -130,11 +73,25 @@ const passingSquares = [
 
 const fallEase = [0.45, 0.05, 0.2, 1] as const;
 
+const fallColumns = checkerSteps
+  .map((count, index) => ({
+    index,
+    delay:
+      count > 0
+        ? index * 0.025
+        : (passingSquares.find((square) => square.col === index)?.delay ?? 0.2),
+  }))
+  .filter(
+    (column) =>
+      checkerSteps[column.index] > 0 ||
+      passingSquares.some((square) => square.col === column.index),
+  );
+
 export function ScrollChecker() {
   return (
     <>
       <HeaderFall />
-      <div className="relative z-0 overflow-hidden bg-bg" aria-hidden>
+      <div className="relative z-[36] overflow-hidden bg-bg" data-fall-band aria-hidden>
         {passingSquares.map((square) => (
           <motion.div
             key={square.col}
@@ -162,17 +119,155 @@ export function ScrollChecker() {
   );
 }
 
-function HeaderFall() {
-  const columns = checkerSteps
-    .map((count, index) => ({
-      index,
-      delay: count > 0 ? index * 0.025 : (passingSquares.find((square) => square.col === index)?.delay ?? 0),
-    }))
-    .filter((column) => checkerSteps[column.index] > 0 || passingSquares.some((square) => square.col === column.index));
+function fallTiming(index: number, cell: number) {
+  const delaySlot = (index * 17 + cell * 11) % 29;
+  const durationSlot = (index * 7 + cell * 13) % 17;
+  return {
+    delay: (delaySlot / 29) * 1.05,
+    duration: 0.92 + (durationSlot / 17) * 0.7,
+  };
+}
+
+function previousBandBottom(band: HTMLElement) {
+  const section = band.closest("section");
+  const previous = section?.previousElementSibling;
+  const source =
+    previous?.getAttribute("data-fall-band") != null
+      ? previous
+      : previous?.querySelector("[data-fall-band]");
+  return (source ?? band).getBoundingClientRect().bottom;
+}
+
+export function SectionFall({ tone, depth }: { tone: "light" | "dark"; depth: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [drop, setDrop] = useState<{ id: number; offsets: number[] } | null>(null);
+  const square = tone === "light" ? "bg-ink" : "bg-paper";
+
+  useEffect(() => {
+    const band = ref.current;
+    const section = band?.closest("section");
+    if (!band || !section) return;
+
+    const cells = () => [...band.querySelectorAll<HTMLElement>("[data-fall-cell]")];
+    const offsetsFor = (landed: boolean) =>
+      cells().map((cell) => {
+        if (landed) return 0;
+        const box = cell.getBoundingClientRect();
+        return previousBandBottom(band) - box.bottom - 1;
+      });
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const top = section.getBoundingClientRect().top;
+    if (reduced || top < window.innerHeight * 0.72) {
+      setDrop({ id: 1, offsets: offsetsFor(true) });
+    }
+
+    let lastY = window.scrollY;
+    let armed = top > window.innerHeight * 0.72;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      const down = y > lastY + 0.5;
+      lastY = y;
+      const seam = section.getBoundingClientRect().top;
+      if (!down) {
+        if (seam > window.innerHeight * 0.9) armed = true;
+        return;
+      }
+      if (armed && seam <= window.innerHeight * 0.82) {
+        armed = false;
+        setDrop((current) => ({
+          id: (current?.id ?? 0) + 1,
+          offsets: offsetsFor(false),
+        }));
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  let cellIndex = 0;
 
   return (
+    <div
+      ref={ref}
+      className="pointer-events-none relative"
+      style={{ zIndex: depth }}
+      data-fall-band
+      aria-hidden
+    >
+      <div className="flex items-end">
+        {checkerSteps.map((count, index) => (
+          <div key={index} className="flex flex-1 flex-col justify-end">
+            {Array.from({ length: count }).map((_, cell) => {
+              const slot = cellIndex;
+              cellIndex += 1;
+              const from = drop?.offsets[slot] ?? 0;
+              const timing = fallTiming(index, cell);
+              return (
+                <div key={cell} className="relative aspect-square" data-fall-cell>
+                  {drop ? (
+                    <FallSquare
+                      key={drop.id}
+                      from={from}
+                      delay={from === 0 ? 0 : timing.delay}
+                      duration={timing.duration}
+                      color={square}
+                    />
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FallSquare({
+  from,
+  delay,
+  duration,
+  color,
+}: {
+  from: number;
+  delay: number;
+  duration: number;
+  color: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion() === true;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || reduce || from === 0) return;
+    const anim = el.animate(
+      [{ transform: `translateY(${from}px)` }, { transform: "translateY(0px)" }],
+      {
+        duration: duration * 1000,
+        delay: delay * 1000,
+        easing: "cubic-bezier(0.45, 0.05, 0.2, 1)",
+        fill: "both",
+      },
+    );
+    return () => anim.cancel();
+  }, [from, delay, duration, reduce]);
+
+  return (
+    <div
+      ref={ref}
+      className={`fall-square absolute inset-0 ${color}`}
+      style={reduce || from === 0 ? undefined : { transform: `translateY(${from}px)` }}
+    />
+  );
+}
+
+function HeaderFall() {
+  return (
     <div className="pointer-events-none fixed inset-x-0 top-0 z-30 h-[4.25rem] overflow-hidden" aria-hidden>
-      {columns.map((column) => (
+      {fallColumns.map((column) => (
         <motion.div
           key={column.index}
           className="fall-passer absolute top-0 aspect-square bg-paper"

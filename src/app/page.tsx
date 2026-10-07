@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { MetaRow } from "@/components/site/Chrome";
-import { Drift, ScrollChecker, ScrollStage } from "@/components/site/ScrollMotion";
+import { Drift, ScrollChecker, ScrollStage, SectionFall } from "@/components/site/ScrollMotion";
 import { StoreBadges } from "@/components/site/StoreBadges";
 import { projects } from "@/content/site";
 import { tafys } from "@/content/tafys";
@@ -62,8 +62,8 @@ export default function Home() {
 
       <ScrollChecker />
 
-      <section id="ekosistem" className="anchor overflow-x-clip bg-paper py-20 text-ink md:py-28">
-        <div className="container">
+      <section id="ekosistem" className="anchor relative bg-paper pt-20 text-ink md:pt-28">
+        <div className="container relative z-10">
           <Drift shift={22}>
             <MetaRow index="01" label="Ekosistem" />
           </Drift>
@@ -90,10 +90,11 @@ export default function Home() {
             ))}
           </div>
         </div>
+        <SectionFall tone="light" depth={32} />
       </section>
 
-      <section className="overflow-x-clip bg-bg py-20 md:py-28">
-        <div className="container">
+      <section className="relative bg-bg pt-20 md:pt-28">
+        <div className="container relative z-10">
           <Drift shift={20}>
             <MetaRow index="02" label={ybai.name} />
           </Drift>
@@ -140,10 +141,11 @@ export default function Home() {
             </Link>
           </Drift>
         </div>
+        <SectionFall tone="dark" depth={28} />
       </section>
 
-      <section className="overflow-x-clip bg-paper py-20 text-ink md:py-28">
-        <div className="container">
+      <section className="relative bg-paper pt-20 text-ink md:pt-28">
+        <div className="container relative z-10">
           <Drift shift={20}>
             <MetaRow index="03" label={ykyer.name} />
           </Drift>
@@ -189,10 +191,11 @@ export default function Home() {
             </Link>
           </Drift>
         </div>
+        <SectionFall tone="light" depth={24} />
       </section>
 
-      <section className="overflow-x-clip bg-bg py-20 md:py-28">
-        <div className="container">
+      <section className="relative bg-bg pt-20 md:pt-28">
+        <div className="container relative z-10">
           <Drift shift={20}>
             <img
               src="/tafys/logo.png"
@@ -229,7 +232,6 @@ export default function Home() {
                   name={`TAFYS ${item.title}`}
                   appStore={item.appStore}
                   playStore={item.playStore}
-                  onDark
                 />
               </Drift>
             ))}
@@ -255,6 +257,7 @@ export default function Home() {
             </Link>
           </Drift>
         </div>
+        <SectionFall tone="dark" depth={20} />
       </section>
     </>
   );

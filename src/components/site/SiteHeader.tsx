@@ -99,9 +99,6 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <Link href="/projeler/yakin-bogaz-ai" className="pill pill-solid hidden md:inline-flex">
-              YakınBoğazAI
-            </Link>
             <button
               type="button"
               className="inline-flex size-11 items-center justify-center rounded-full border border-white/20"

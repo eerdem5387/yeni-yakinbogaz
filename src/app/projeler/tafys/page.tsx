@@ -10,6 +10,25 @@ export const metadata: Metadata = {
   description: `${tafys.headline} ${tafys.lead}`,
 };
 
+function Shot({ src, alt, light = false }: { src: string; alt: string; light?: boolean }) {
+  return (
+    <figure className="mt-14">
+      <img
+        src={src}
+        alt={alt}
+        width={1920}
+        height={1080}
+        className={`w-full ${light ? "border border-line-ink" : "border border-white/10"}`}
+      />
+      <figcaption
+        className={`mt-3 text-[0.7rem] tracking-[0.14em] uppercase ${light ? "text-ink/45" : "text-muted"}`}
+      >
+        {alt}
+      </figcaption>
+    </figure>
+  );
+}
+
 function DataTable({
   headers,
   rows,
@@ -88,6 +107,7 @@ export default function TafysPage() {
             Platformu incele
             <ArrowUpRight size={16} />
           </a>
+          <Shot src="/tafys/shots/01-kapak.png" alt="Kurumsal panel özeti" />
         </div>
       </section>
 
@@ -114,6 +134,7 @@ export default function TafysPage() {
               </article>
             ))}
           </div>
+          <Shot src="/tafys/shots/02-uc-yuzey.png" alt="Kurumsal canlı takip" light />
         </div>
       </section>
 
@@ -132,6 +153,7 @@ export default function TafysPage() {
               </li>
             ))}
           </ul>
+          <Shot src="/tafys/shots/03-is-kollari.png" alt="Yetkililer ve sürücüler" />
         </div>
       </section>
 
@@ -143,6 +165,7 @@ export default function TafysPage() {
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-paper/70">{tafys.core.text}</p>
           <DataTable headers={tafys.core.headers} rows={tafys.core.rows} />
+          <Shot src="/tafys/shots/04-kurumsal.png" alt="Araç yönetimi" />
         </div>
       </section>
 
@@ -160,6 +183,7 @@ export default function TafysPage() {
               </article>
             ))}
           </div>
+          <Shot src="/tafys/shots/05-is-alanlari.png" alt="Operasyon yönetimi" light />
         </div>
       </section>
 
@@ -179,6 +203,7 @@ export default function TafysPage() {
               </li>
             ))}
           </ol>
+          <Shot src="/tafys/shots/06-vitrin.png" alt="Vitrin" />
         </div>
       </section>
 
@@ -190,6 +215,7 @@ export default function TafysPage() {
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-paper/70">{tafys.driver.text}</p>
           <DataTable headers={tafys.driver.headers} rows={tafys.driver.rows} />
+          <Shot src="/tafys/shots/07-surucu.png" alt="Okul servisi sürücüleri" />
           <h3 className="mt-16 text-[clamp(1.6rem,3vw,2.4rem)] font-medium tracking-[-0.03em]">
             {tafys.driver.flowTitle}
           </h3>
@@ -203,6 +229,7 @@ export default function TafysPage() {
             ))}
           </ol>
           <p className="mt-6 text-paper/75">{tafys.driver.flowNote}</p>
+          <Shot src="/tafys/shots/08-okul-akisi.png" alt="Okul servisi rotaları" />
         </div>
       </section>
 
@@ -214,11 +241,13 @@ export default function TafysPage() {
           </h2>
           <p className="mt-6 max-w-3xl leading-relaxed text-ink/70">{tafys.passenger.text}</p>
           <DataTable headers={tafys.passenger.headers} rows={tafys.passenger.rows} light />
+          <Shot src="/tafys/shots/09-yolcu.png" alt="Müşteri yönetimi" light />
           <h3 className="mt-16 text-[clamp(1.6rem,3vw,2.4rem)] font-medium tracking-[-0.03em]">
             {tafys.passenger.whoTitle}
           </h3>
           <DataTable headers={tafys.passenger.whoHeaders} rows={tafys.passenger.whoRows} light />
           <p className="mt-8 max-w-3xl text-ink/70">{tafys.passenger.note}</p>
+          <Shot src="/tafys/shots/10-kim-ne-gorur.png" alt="Okul servisi velileri" light />
         </div>
       </section>
 
@@ -229,6 +258,7 @@ export default function TafysPage() {
             {tafys.journey.title}
           </h2>
           <DataTable headers={tafys.journey.headers} rows={tafys.journey.rows} />
+          <Shot src="/tafys/shots/11-akis.png" alt="Personel servisi yönetimi" />
         </div>
       </section>
 
@@ -247,6 +277,7 @@ export default function TafysPage() {
               </li>
             ))}
           </ul>
+          <Shot src="/tafys/shots/12-moduller.png" alt="Tur ve acente yönetimi" />
         </div>
       </section>
 
@@ -258,6 +289,7 @@ export default function TafysPage() {
           </h2>
           <DataTable headers={tafys.stack.headers} rows={tafys.stack.rows} light />
           <p className="mt-8 text-ink/70">{tafys.stack.note}</p>
+          <Shot src="/tafys/shots/13-entegrasyon.png" alt="Entegrasyon ayarları" light />
           <ol className="mt-12 grid gap-4 md:grid-cols-3">
             {tafys.stack.close.map((step, index) => (
               <li key={step.title} className="border border-line-ink p-5">

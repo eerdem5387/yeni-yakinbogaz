@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YakınBoğazAI — Ürün kataloğu</title>
+  <style>
+    @font-face {
+      font-family: "Figtree";
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url("fonts/figtree-latin-ext.woff2") format("woff2");
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    @font-face {
+      font-family: "Figtree";
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url("fonts/figtree-latin.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    :root {
+      --bg: #070708;
+      --paper: #f3f2ee;
+      --ink: #141416;
+      --teal: #8eb4bc;
+      --muted: #8d8d90;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    html, body {
+      background: #2a2a2c;
+      color: var(--paper);
+      font-family: "Figtree", sans-serif;
+      font-weight: 400;
+      text-rendering: optimizeLegibility;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 22px;
+      background: #111113;
+      color: #f3f2ee;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 13px;
+    }
+
+    .toolbar p {
+      max-width: 720px;
+      line-height: 1.45;
+      color: rgba(243, 242, 238, 0.72);
+    }
+
+    .toolbar strong {
+      color: #f3f2ee;
+      font-weight: 600;
+    }
+
+    .toolbar button {
+      flex: none;
+      border: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+
+    .stage {
+      padding: 28px 0 64px;
+    }
+
+    .page {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto 18px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.38);
+    }
+
+    .run {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 8pt;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .kicker {
+      font-size: 8.5pt;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .logo {
+      height: 8.5mm;
+      width: auto;
+      display: block;
+      mix-blend-mode: screen;
+    }
+
+    /* ——— Kapak ——— */
+    .cover {
+      background: var(--bg);
+      color: var(--paper);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cover-main {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 14mm 15mm 10mm;
+    }
+
+    .cover-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.045) 0.15mm, transparent 0.15mm),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0.15mm, transparent 0.15mm);
+      background-size: 16mm 16mm;
+      mask-image: radial-gradient(ellipse at 42% 38%, #000 8%, transparent 72%);
+      pointer-events: none;
+    }
+
+    .cover-main > * {
+      position: relative;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 3.5mm;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 11pt;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .brand span,
+    .brand-side {
+      font-size: 8pt;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .brand-side {
+      margin-left: auto;
+    }
+
+    .cover .kicker {
+      margin-top: 18mm;
+      color: var(--teal);
+    }
+
+    .cover h1 {
+      margin-top: 3mm;
+      font-size: 54pt;
+      line-height: 0.9;
+      font-weight: 600;
+      letter-spacing: -0.055em;
+      white-space: nowrap;
+    }
+
+    .cover .cat {
+      margin-top: 5mm;
+      font-size: 9pt;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(243, 242, 238, 0.62);
+    }
+
+    .cover h2 {
+      margin-top: auto;
+      margin-bottom: 2mm;
+      max-width: 175mm;
+      font-size: 23pt;
+      font-weight: 500;
+      line-height: 1.12;
+      letter-spacing: -0.035em;
+    }
+
+    .cover h2 em {
+      font-style: normal;
+      color: rgba(243, 242, 238, 0.5);
+    }
+
+    .cover h2 u {
+      text-decoration-thickness: 0.7pt;
+      text-underline-offset: 0.16em;
+    }
+
+    .cover .lead {
+      margin-top: 6mm;
+      max-width: 148mm;
+      font-size: 11.5pt;
+      line-height: 1.45;
+      color: rgba(243, 242, 238, 0.78);
+    }
+
+    .cover-foot {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 8mm;
+      background: var(--paper);
+      color: var(--ink);
+      padding: 8mm 15mm 9mm;
+    }
+
+    .promises {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      list-style: none;
+    }
+
+    .promises li {
+      padding-right: 4mm;
+      font-size: 11pt;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+
+    .promises span {
+      display: block;
+      margin-bottom: 2mm;
+      font-size: 8pt;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      color: #6d7476;
+    }
+
+    .cover-meta {
+      border-left: 0.25mm solid rgba(20, 20, 22, 0.16);
+      padding-left: 6mm;
+      font-size: 9pt;
+      line-height: 1.45;
+      color: rgba(20, 20, 22, 0.72);
+    }
+
+    .cover-meta strong {
+      display: block;
+      margin-top: 2.5mm;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* ——— Sorun ——— */
+    .problem {
+      background: var(--paper);
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      padding: 12mm 14mm 0;
+    }
+
+    .problem .run {
+      color: rgba(20, 20, 22, 0.45);
+    }
+
+    .problem .kicker {
+      margin-top: 8mm;
+      color: #5d6c70;
+    }
+
+    .problem h2 {
+      margin-top: 3mm;
+      max-width: 170mm;
+      font-size: 22pt;
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .problem h2 em {
+      font-style: normal;
+      color: rgba(20, 20, 22, 0.42);
+    }
+
+    .intro {
+      margin-top: 4mm;
+      max-width: 165mm;
+      font-size: 10.5pt;
+      line-height: 1.42;
+      color: rgba(20, 20, 22, 0.72);
+    }
+
+    .sources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.6mm;
+      margin-top: 4mm;
+      list-style: none;
+    }
+
+    .sources li {
+      border: 0.25mm solid rgba(20, 20, 22, 0.2);
+      border-radius: 100px;
+      padding: 0.7mm 2.2mm;
+      font-size: 7.5pt;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .closer {
+      margin-top: 3.5mm;
+      font-size: 8.5pt;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(20, 20, 22, 0.48);
+    }
+
+    .reasons {
+      margin-top: 4mm;
+      border-top: 0.25mm solid rgba(20, 20, 22, 0.14);
+      list-style: none;
+    }
+
+    .reasons li {
+      display: grid;
+      grid-template-columns: 12mm 1fr;
+      gap: 3mm;
+      padding: 3.2mm 0;
+      border-bottom: 0.25mm solid rgba(20, 20, 22, 0.14);
+    }
+
+    .reasons .n {
+      font-size: 8.5pt;
+      letter-spacing: 0.14em;
+      color: rgba(20, 20, 22, 0.4);
+      padding-top: 0.4mm;
+    }
+
+    .reasons h3 {
+      font-size: 12pt;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .reasons p {
+      margin-top: 1.2mm;
+      font-size: 9.5pt;
+      line-height: 1.38;
+      color: rgba(20, 20, 22, 0.72);
+    }
+
+    .solution {
+      margin-top: 6mm;
+      margin-left: -14mm;
+      margin-right: -14mm;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      color: var(--paper);
+      padding: 9mm 14mm 10mm;
+    }
+
+    .solution .kicker {
+      color: var(--teal);
+    }
+
+    .solution h2 {
+      margin-top: 2.5mm;
+      font-size: 16pt;
+      font-weight: 500;
+      letter-spacing: -0.035em;
+      line-height: 1.12;
+    }
+
+    .pairs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5mm;
+      margin-top: 5mm;
+      list-style: none;
+    }
+
+    .pairs li {
+      border-top: 0.3mm solid rgba(255, 255, 255, 0.16);
+      padding-top: 2.5mm;
+    }
+
+    .pairs small {
+      display: block;
+      margin-bottom: 2mm;
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+      color: var(--teal);
+    }
+
+    .pairs p {
+      font-size: 10pt;
+      font-weight: 500;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+
+    .promise {
+      margin-top: auto;
+      padding-top: 6mm;
+      max-width: 165mm;
+      font-size: 13pt;
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -0.03em;
+    }
+
+    .promise u {
+      text-decoration-thickness: 0.6pt;
+      text-underline-offset: 0.14em;
+    }
+
+    .promise em {
+      font-style: normal;
+      color: rgba(243, 242, 238, 0.5);
+    }
+
+    /* ——— Modüller ——— */
+    .modules {
+      background: var(--bg);
+      color: var(--paper);
+      display: flex;
+      flex-direction: column;
+      padding: 12mm 14mm 10mm;
+    }
+
+    .modules .run {
+      color: rgba(243, 242, 238, 0.45);
+    }
+
+    .modules .head {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 8mm;
+      align-items: end;
+      margin-top: 7mm;
+      padding-bottom: 4mm;
+    }
+
+    .modules .kicker {
+      color: var(--teal);
+    }
+
+    .modules h2 {
+      margin-top: 2.5mm;
+      font-size: 20pt;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+    }
+
+    .modules .head p {
+      font-size: 10pt;
+      line-height: 1.4;
+      color: rgba(243, 242, 238, 0.68);
+    }
+
+    .mods {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      list-style: none;
+      margin-top: 1mm;
+      border-bottom: 0.25mm solid rgba(255, 255, 255, 0.14);
+    }
+
+    .mod {
+      display: grid;
+      grid-template-columns: 11mm 42mm 1fr;
+      gap: 3mm 4mm;
+      align-items: start;
+      padding: 3.1mm 0 3.3mm;
+      border-top: 0.25mm solid rgba(255, 255, 255, 0.14);
+    }
+
+    .mod .n {
+      font-size: 8.5pt;
+      letter-spacing: 0.12em;
+      color: var(--teal);
+      padding-top: 0.5mm;
+    }
+
+    .mod h3 {
+      font-size: 11.5pt;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .mod .role {
+      margin-top: 1mm;
+      font-size: 8.5pt;
+      line-height: 1.3;
+      color: rgba(243, 242, 238, 0.55);
+    }
+
+    .mod .body p {
+      font-size: 9.5pt;
+      line-height: 1.35;
+      color: rgba(243, 242, 238, 0.82);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.3mm;
+      margin-top: 1.8mm;
+      list-style: none;
+    }
+
+    .chips li {
+      border: 0.25mm solid rgba(243, 242, 238, 0.28);
+      border-radius: 100px;
+      padding: 0.5mm 2.2mm 0.6mm;
+      font-size: 7.5pt;
+      letter-spacing: 0.01em;
+      color: rgba(243, 242, 238, 0.86);
+    }
+
+    .modules .note {
+      margin-top: 4mm;
+      font-size: 9pt;
+      line-height: 1.4;
+      color: rgba(243, 242, 238, 0.7);
+    }
+
+    /* ——— Senaryo ——— */
+    .close {
+      background: var(--paper);
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      padding: 12mm 14mm 0;
+    }
+
+    .close .run {
+      color: rgba(20, 20, 22, 0.45);
+    }
+
+    .close .kicker {
+      margin-top: 7mm;
+      color: #5d6c70;
+    }
+
+    .close h2 {
+      margin-top: 2.5mm;
+      max-width: 165mm;
+      font-size: 22pt;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+    }
+
+    .setup {
+      margin-top: 3.5mm;
+      max-width: 170mm;
+      font-size: 10.5pt;
+      line-height: 1.4;
+      color: rgba(20, 20, 22, 0.72);
+    }
+
+    blockquote {
+      margin-top: 5mm;
+      padding: 4.5mm 0;
+      border-top: 0.3mm solid rgba(20, 20, 22, 0.16);
+      border-bottom: 0.3mm solid rgba(20, 20, 22, 0.16);
+      font-size: 15.5pt;
+      font-weight: 500;
+      line-height: 1.28;
+      letter-spacing: -0.03em;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 3.5mm;
+      margin-top: 4.5mm;
+      list-style: none;
+    }
+
+    .steps li {
+      min-height: 34mm;
+    }
+
+    .steps .n {
+      display: block;
+      font-size: 8pt;
+      letter-spacing: 0.14em;
+      color: #5d6c70;
+    }
+
+    .steps h3 {
+      margin-top: 1.6mm;
+      font-size: 10.5pt;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+
+    .steps p {
+      margin-top: 1.4mm;
+      font-size: 8.5pt;
+      line-height: 1.35;
+      color: rgba(20, 20, 22, 0.7);
+    }
+
+    .stay {
+      margin-top: 4mm;
+      font-size: 10.5pt;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .outcomes-head {
+      margin-top: auto;
+      padding-top: 8mm;
+    }
+
+    .closing-line {
+      margin-top: 6mm;
+      max-width: 175mm;
+      font-size: 12.5pt;
+      font-weight: 500;
+      line-height: 1.32;
+      letter-spacing: -0.03em;
+    }
+
+    .outcomes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4mm;
+      margin-top: 3.5mm;
+      list-style: none;
+    }
+
+    .outcomes li {
+      border-top: 0.3mm solid var(--ink);
+      padding-top: 2.5mm;
+    }
+
+    .outcomes h3 {
+      font-size: 12pt;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .outcomes p {
+      margin-top: 1.5mm;
+      font-size: 9.5pt;
+      line-height: 1.38;
+      color: rgba(20, 20, 22, 0.7);
+    }
+
+    .end {
+      margin-top: 7mm;
+      margin-left: -14mm;
+      margin-right: -14mm;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 8mm;
+      background: var(--bg);
+      color: var(--paper);
+      padding: 8mm 14mm 9mm;
+    }
+
+    .end p {
+      font-size: 12pt;
+      font-weight: 500;
+      line-height: 1.3;
+      letter-spacing: -0.03em;
+    }
+
+    .end address {
+      font-style: normal;
+      font-size: 9pt;
+      line-height: 1.45;
+      color: rgba(243, 242, 238, 0.78);
+      border-left: 0.25mm solid rgba(255, 255, 255, 0.16);
+      padding-left: 6mm;
+    }
+
+    .end strong {
+      display: block;
+      margin-bottom: 1mm;
+      color: var(--paper);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    /* ——— Mimari ——— */
+    .arch {
+      background: var(--paper);
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      padding: 12mm 14mm 11mm;
+    }
+
+    .arch .run {
+      color: rgba(20, 20, 22, 0.45);
+    }
+
+    .arch .kicker {
+      margin-top: 6mm;
+      color: #5d6c70;
+    }
+
+    .arch h2 {
+      margin-top: 2.5mm;
+      max-width: 170mm;
+      font-size: 22pt;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+    }
+
+    .arch .intro {
+      margin-top: 3mm;
+      max-width: 168mm;
+      font-size: 10.5pt;
+      line-height: 1.4;
+      color: rgba(20, 20, 22, 0.72);
+    }
+
+    .flow {
+      margin-top: 5mm;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .src-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2.2mm;
+      list-style: none;
+    }
+
+    .src-row li {
+      border: 0.3mm solid rgba(20, 20, 22, 0.22);
+      padding: 2.2mm 1.6mm 2.4mm;
+      text-align: center;
+    }
+
+    .src-row strong {
+      display: block;
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .src-row span {
+      display: block;
+      margin-top: 0.8mm;
+      font-size: 7pt;
+      line-height: 1.25;
+      color: rgba(20, 20, 22, 0.55);
+    }
+
+    .drop {
+      width: 0.35mm;
+      height: 5mm;
+      margin: 0 auto;
+      background: linear-gradient(#141416, #141416) center top / 0.35mm 3.4mm no-repeat;
+      position: relative;
+      flex: none;
+    }
+
+    .drop::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      border-left: 1.15mm solid transparent;
+      border-right: 1.15mm solid transparent;
+      border-top: 1.6mm solid #141416;
+    }
+
+    .join {
+      display: block;
+      width: 100%;
+      height: 6.5mm;
+      flex: none;
+    }
+
+    .join path {
+      fill: none;
+      stroke: #141416;
+      stroke-width: 1.15;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .campus {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 0.45mm solid var(--ink);
+      padding: 5mm 5mm 4.5mm;
+      position: relative;
+      min-height: 0;
+    }
+
+    .campus-tag {
+      position: absolute;
+      top: -2.3mm;
+      left: 5mm;
+      background: var(--paper);
+      padding: 0 2mm;
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .node {
+      display: grid;
+      grid-template-columns: 9mm 1fr;
+      column-gap: 2mm;
+      align-items: baseline;
+      border: 0.3mm solid rgba(20, 20, 22, 0.18);
+      padding: 2.2mm 3mm 2.4mm;
+    }
+
+    .node .num {
+      font-size: 8pt;
+      letter-spacing: 0.12em;
+      color: #5d6c70;
+    }
+
+    .node strong {
+      font-size: 11pt;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .node em {
+      grid-column: 2;
+      font-style: normal;
+      font-size: 8pt;
+      line-height: 1.3;
+      color: rgba(20, 20, 22, 0.62);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4mm;
+    }
+
+    .lane {
+      margin-bottom: 1.4mm;
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #5d6c70;
+    }
+
+    .node.model {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+
+    .node.model .num {
+      color: var(--teal);
+    }
+
+    .node.model em {
+      color: rgba(243, 242, 238, 0.68);
+    }
+
+    .faces {
+      display: grid;
+      grid-template-columns: 9mm auto 1fr;
+      gap: 2mm 3mm;
+      align-items: center;
+      border-top: 0.3mm solid rgba(20, 20, 22, 0.16);
+      padding-top: 2.6mm;
+    }
+
+    .faces .num {
+      font-size: 8pt;
+      letter-spacing: 0.12em;
+      color: #5d6c70;
+    }
+
+    .faces strong {
+      font-size: 11pt;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .faces ul {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 1.4mm;
+      list-style: none;
+    }
+
+    .faces li {
+      border: 0.25mm solid rgba(20, 20, 22, 0.22);
+      border-radius: 100px;
+      padding: 0.5mm 2.2mm 0.7mm;
+      font-size: 7.5pt;
+    }
+
+    .plant {
+      display: grid;
+      grid-template-columns: 22mm 1fr 1fr;
+      gap: 3mm;
+      align-items: stretch;
+      padding-top: 3.5mm;
+    }
+
+    .plant > p {
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #5d6c70;
+      padding-top: 1.5mm;
+    }
+
+    .plant div {
+      border-top: 0.3mm solid var(--ink);
+      padding-top: 1.8mm;
+    }
+
+    .plant strong {
+      display: block;
+      font-size: 10pt;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .plant span {
+      display: block;
+      margin-top: 0.6mm;
+      font-size: 8pt;
+      line-height: 1.3;
+      color: rgba(20, 20, 22, 0.62);
+    }
+
+    .gate {
+      margin-top: 3.2mm;
+      font-size: 8.5pt;
+      line-height: 1.35;
+      color: rgba(20, 20, 22, 0.72);
+    }
+
+    @media print {
+      html, body {
+        background: #fff;
+      }
+
+      .toolbar {
+        display: none !important;
+      }
+
+      .stage {
+        padding: 0;
+      }
+
+      .page {
+        margin: 0;
+        box-shadow: none;
+        break-after: page;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        break-after: auto;
+        page-break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <p>
+      <strong>YakınBoğazAI ürün kataloğu</strong> — 5 sayfa, tam A4 (210 × 297 mm).
+      Yazdırırken kenar boşluğu <strong>Yok</strong>, ölçek <strong>%100</strong>, arka plan grafikleri <strong>açık</strong> olsun.
+      Metin, sayfa kenarından 14 mm içeride durur.
+    </p>
+    <button type="button" onclick="window.print()">Yazdır / PDF</button>
+  </div>
+
+  <main class="stage">
+    <article class="page cover">
+      <div class="cover-main">
+        <header class="brand">
+          <img class="logo" src="logo.png" alt="" />
+          <div>
+            <strong>Yakın Boğaz</strong>
+            <span>Teknoloji ekosistemi</span>
+          </div>
+          <p class="brand-side">Ürün kataloğu</p>
+        </header>
+
+        <p class="kicker">Kapalı devre</p>
+        <h1>YakınBoğazAI</h1>
+        <p class="cat">Kurumsal yapay zekâ ve veri analiz platformu</p>
+
+        <h2>
+          Verinizi <u>dışarı çıkarmadan</u><br />
+          konuşan kurumsal <em>yapay zekâ</em>
+        </h2>
+        <p class="lead">
+          Kurum verisini tek akışta toplar, analiz eder ve çalışanların bu veriyle doğal dilde konuşmasını sağlar — tamamen kurumun kendi altyapısında.
+        </p>
+      </div>
+
+      <footer class="cover-foot">
+        <ol class="promises">
+          <li><span>01</span>Kapalı devre</li>
+          <li><span>02</span>Kurumsal veriyle soru-cevap</li>
+          <li><span>03</span>Analiz ve tahmin</li>
+        </ol>
+        <div class="cover-meta">
+          Dil modeli, bilgi tabanı ve analiz motoru kurumun kendi altyapısında çalışır.
+          <strong>RTEÜ Teknopark, Rize</strong>
+        </div>
+      </footer>
+    </article>
+
+    <article class="page problem">
+      <p class="run"><span>YakınBoğazAI · Ürün kataloğu</span><span>02</span></p>
+      <p class="kicker">01 · Sorun</p>
+      <h2>Kurumlar veri üretiyor, <em>ama bu veriyi kullanamıyor</em></h2>
+      <p class="intro">
+        Bugün her kurum ciddi miktarda veri üretiyor. Bu verinin değeri çok yüksek; ancak çoğu kurumda karar süreçlerine dönüşmüyor.
+      </p>
+      <ul class="sources">
+        <li>Operasyon kayıtları</li>
+        <li>Müşteri ve hasta dosyaları</li>
+        <li>Ölçüm ve sensör verileri</li>
+        <li>Raporlar</li>
+        <li>Prosedürler</li>
+        <li>Sözleşmeler</li>
+        <li>Yazışmalar</li>
+      </ul>
+      <p class="closer">Veri var, cevap yok. Üç temel engel bu verinin kullanılmasını engelliyor.</p>
+      <ol class="reasons">
+        <li>
+          <span class="n">01</span>
+          <div>
+            <h3>Veri dağınık ve farklı formatlarda</h3>
+            <p>Bir kısmı veri ambarında, bir kısmı Excel ve CSV dosyalarında, bir kısmı PDF ve Word dokümanlarında, bir kısmı da başka sistemlerin API’lerinde duruyor. Bir soruya cevap bulmak için birkaç sistemi elle taramak gerekiyor.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">02</span>
+          <div>
+            <h3>Sayılar tek başına bir şey söylemiyor</h3>
+            <p>Raporlar ortalama, grafik ve tablo gösteriyor; “Bu değer neden yükseldi?”, “Bu normal mi?”, “Önümüzdeki dönem ne bekleyelim?” sorularını cevaplamıyor. Yorum yapacak analist sınırlı, karar gecikiyor.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">03</span>
+          <div>
+            <h3>Hazır yapay zekâ servisleri hassas veri için kullanılamıyor</h3>
+            <p>Kişisel veri, ticari sır veya regülasyona tabi bilgi kurum dışındaki bir sunucuya gönderilemez. KVKK, sektör regülasyonları ve güvenlik politikaları buna izin vermez.</p>
+          </div>
+        </li>
+      </ol>
+
+      <section class="solution">
+        <p class="kicker">02 · Çözüm</p>
+        <h2>YakınBoğazAI bu üç sorunu birlikte çözer</h2>
+        <ol class="pairs">
+          <li>
+            <small>Veri dağınık</small>
+            <p>Tüm veri tek akışta toplanır ve yapay zekânın anlayacağı biçime dönüştürülür.</p>
+          </li>
+          <li>
+            <small>Sayılar konuşmuyor</small>
+            <p>Sayısal analiz otomatik yapılır; sonuçlar doğal dilde yorumlanır.</p>
+          </li>
+          <li>
+            <small>Bulut yapay zekâ kullanılamıyor</small>
+            <p>Dil modeli, bilgi tabanı ve analiz motoru kurum içinde, kapalı devre çalışır.</p>
+          </li>
+        </ol>
+        <p class="promise"><u>Verinin tek bir satırı bile</u> <em>dışarıdaki bir yapay zekâ servisine gönderilmez.</em></p>
+      </section>
+    </article>
+
+    <article class="page modules">
+      <p class="run"><span>YakınBoğazAI · Ürün kataloğu</span><span>03</span></p>
+      <header class="head">
+        <div>
+          <p class="kicker">03 · Nasıl çalışır</p>
+          <h2>Birbiriyle konuşan uzman modüller</h2>
+        </div>
+        <p>Her modül tek bir işi üstlenir. Verinin yolculuğu uçtan uca izlenebilir; kurumun mevcut sistemlerini değiştirmesi gerekmez.</p>
+      </header>
+      <ol class="mods">
+        <li class="mod">
+          <span class="n">01</span>
+          <div>
+            <h3>Veri toplama</h3>
+            <p class="role">Verinin olduğu yere bağlanırız</p>
+          </div>
+          <div class="body">
+            <p>Kayıtlar bulunduğu yerden alınır. Her kaydın parmak izi tutulur; sonraki eşitlemede yalnız yeni ve değişen kayıtlar işlenir.</p>
+            <ul class="chips">
+              <li>Veri ambarı</li>
+              <li>Klasör izleme</li>
+              <li>API ve anlık akış</li>
+              <li>Doğrudan gönderim</li>
+              <li>Doküman yükleme</li>
+            </ul>
+          </div>
+        </li>
+        <li class="mod">
+          <span class="n">02</span>
+          <div>
+            <h3>Dönüştürme</h3>
+            <p class="role">Anlamlı dokümanlara çeviririz</p>
+          </div>
+          <div class="body">
+            <p>Farklı kaynaklar ortak bir doküman formatına çevrilir. Yapay zekâ satırlara değil, bağlamı olan bilgiye erişir.</p>
+            <ul class="chips">
+              <li>Ortak doküman formatı</li>
+              <li>Özet profil</li>
+              <li>Dönemsel raporlar</li>
+            </ul>
+          </div>
+        </li>
+        <li class="mod">
+          <span class="n">03</span>
+          <div>
+            <h3>Kurumsal bilgi tabanı</h3>
+            <p class="role">Anlamına göre aranır</p>
+          </div>
+          <div class="body">
+            <p>Dokümanlar parçalanır, kurum içinde çalışan bir modelle vektörlenir ve konu bazlı koleksiyonlarda saklanır. Arama kelime eşleşmesine değil anlama göredir.</p>
+            <ul class="chips">
+              <li>Parçalama</li>
+              <li>Vektörleme</li>
+              <li>Kurum içi saklama</li>
+            </ul>
+          </div>
+        </li>
+        <li class="mod">
+          <span class="n">04</span>
+          <div>
+            <h3>Sayısal analiz</h3>
+            <p class="role">Sayıları konuştururuz</p>
+          </div>
+          <div class="body">
+            <p>Ölçüm, sensör, satış ve operasyon verisi zaman serisi olarak kaydedilir. Sonuçlar raporlanır ve panelden izlenir.</p>
+            <ul class="chips">
+              <li>İstatistik</li>
+              <li>Zaman serisi</li>
+              <li>Anomali tespiti</li>
+              <li>Tahminleme</li>
+            </ul>
+          </div>
+        </li>
+        <li class="mod">
+          <span class="n">05</span>
+          <div>
+            <h3>Yapay zekâ ile yorum</h3>
+            <p class="role">Verinizle konuşun</p>
+          </div>
+          <div class="body">
+            <p>Soru önce bilgi tabanında aranır. Dil modeli kurum verisine dayanarak kaynaklı yanıt üretir; anomali ve tahmini sade dille açıklar.</p>
+            <ul class="chips">
+              <li>Bilgi tabanında ara</li>
+              <li>Kaynaklı yanıt</li>
+              <li>Kurumun dili</li>
+            </ul>
+          </div>
+        </li>
+        <li class="mod">
+          <span class="n">06</span>
+          <div>
+            <h3>Arayüzler</h3>
+            <p class="role">Web ve mobil</p>
+          </div>
+          <div class="body">
+            <p>Sohbet, analiz, kayıt detayı, doküman yükleme ve izleme web panelinde; aynı işlevler iOS ve Android uygulamasında da vardır.</p>
+            <ul class="chips">
+              <li>Panel</li>
+              <li>Sayısal analiz</li>
+              <li>Sohbet</li>
+              <li>Bilgi tabanı</li>
+              <li>Canlı izleme</li>
+            </ul>
+          </div>
+        </li>
+        <li class="mod">
+          <span class="n">07</span>
+          <div>
+            <h3>Güvenlik ve altyapı</h3>
+            <p class="role">Veri egemenliği kurumda</p>
+          </div>
+          <div class="body">
+            <p>Tüm istekler kimlik doğrulayan API geçidinden geçer. Kurulum konteyner tabanlıdır; kurum sunucusuna veya kuruma ayrılmış ortama kurulur.</p>
+            <ul class="chips">
+              <li>Kapalı devre</li>
+              <li>JWT oturum</li>
+              <li>HTTPS</li>
+              <li>Sağlık kontrolü</li>
+              <li>GPU ile ölçekleme</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+      <p class="note">Kaynaktan çekme, dönüştürme, bilgi tabanına yazma ve vektör veritabanına kayıt aynı akışın parçasıdır. Metin, kayıt ve modeller kurum altyapısında kalır.</p>
+    </article>
+
+    <article class="page arch">
+      <p class="run"><span>YakınBoğazAI · Ürün kataloğu</span><span>04</span></p>
+      <p class="kicker">04 · Mimari</p>
+      <h2>Tek akış, kurum sınırının içinde</h2>
+      <p class="intro">Kaynaklar bağlanır. Toplama, dönüştürme, analiz ve dil modeli aynı altyapıda kalır. Dışarıya yalnız yanıt çıkar.</p>
+
+      <div class="flow">
+        <ul class="src-row">
+          <li><strong>Veri ambarı</strong><span>Tablolar</span></li>
+          <li><strong>Klasör</strong><span>JSON · CSV</span></li>
+          <li><strong>API</strong><span>Canlı akış</span></li>
+          <li><strong>Gönderim</strong><span>JSON · CSV</span></li>
+          <li><strong>Doküman</strong><span>PDF · Word</span></li>
+        </ul>
+        <div class="drop" aria-hidden="true"></div>
+        <div class="campus">
+          <p class="campus-tag">Kurum altyapısı · kapalı devre</p>
+
+          <div class="node">
+            <span class="num">01</span>
+            <strong>Veri toplama</strong>
+            <em>Parmak izi tutulur; yalnız yeni ve değişen kayıt işlenir.</em>
+          </div>
+
+          <div>
+            <div class="drop" aria-hidden="true"></div>
+            <div class="node">
+              <span class="num">02</span>
+              <strong>Dönüştürme</strong>
+              <em>Ortak doküman, özet profil ve dönemsel rapor.</em>
+            </div>
+          </div>
+
+          <div>
+            <svg class="join" viewBox="0 0 400 28" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M200 0 V10 H70 V28 M200 10 H330 V28" />
+            </svg>
+            <div class="split">
+              <div>
+                <p class="lane">Metin</p>
+                <div class="node">
+                  <span class="num">03</span>
+                  <strong>Bilgi tabanı</strong>
+                  <em>Parçala, vektörle, konu koleksiyonunda sakla.</em>
+                </div>
+              </div>
+              <div>
+                <p class="lane">Sayı</p>
+                <div class="node">
+                  <span class="num">04</span>
+                  <strong>Sayısal analiz</strong>
+                  <em>Zaman serisi, anomali ve tahmin.</em>
+                </div>
+              </div>
+            </div>
+            <svg class="join" viewBox="0 0 400 28" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M70 0 V16 H200 V28 M330 0 V16 H200" />
+            </svg>
+            <div class="node model">
+              <span class="num">05</span>
+              <strong>Dil modeli</strong>
+              <em>Bilgi tabanında arar, analizi yorumlar, kaynağını gösterir.</em>
+            </div>
+          </div>
+
+          <div>
+            <div class="drop" aria-hidden="true"></div>
+            <div class="faces">
+              <span class="num">06</span>
+              <strong>Arayüzler</strong>
+              <ul>
+                <li>Panel</li>
+                <li>Analiz</li>
+                <li>Sohbet</li>
+                <li>iOS</li>
+                <li>Android</li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <div class="plant">
+              <p>Kurulum</p>
+              <div>
+                <strong>GPU sunucusu</strong>
+                <span>Dil modeli ve vektörleme</span>
+              </div>
+              <div>
+                <strong>Uygulama sunucusu</strong>
+                <span>API, paneller ve veritabanları</span>
+              </div>
+            </div>
+            <p class="gate">Tek giriş API geçidinden geçer: JWT oturum, HTTPS, sağlık kontrolü. Veri bu çerçevenin dışına çıkmaz.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="page close">
+      <p class="run"><span>YakınBoğazAI · Ürün kataloğu</span><span>05</span></p>
+      <p class="kicker">05 · Senaryo</p>
+      <h2>Veri ambarından yöneticinin cebine</h2>
+      <p class="setup">
+        Bir kurumun veri ambarında on binlerce müşteri, yılları kapsayan işlem ve ölçüm kayıtları; ayrıca yüzlerce sayfa prosedür dokümanı var.
+      </p>
+      <blockquote>“Son altı ayda değerleri sürekli yükselen müşteriler kimler ve prosedüre göre ne yapmamız gerekiyor?”</blockquote>
+      <ol class="steps">
+        <li>
+          <span class="n">01</span>
+          <h3>Bağlan ve dönüştür</h3>
+          <p>Kayıtlar özet profil ve dönemsel raporlara çevrilir; prosedürlerle bilgi tabanına yazılır.</p>
+        </li>
+        <li>
+          <span class="n">02</span>
+          <h3>Analiz et</h3>
+          <p>Sayısal ölçümler analiz motoruna akar; olağandışı değerler otomatik işaretlenir.</p>
+        </li>
+        <li>
+          <span class="n">03</span>
+          <h3>Sor</h3>
+          <p>Yönetici, mobil uygulamadan sorusunu sorar.</p>
+        </li>
+        <li>
+          <span class="n">04</span>
+          <h3>Yanıtla</h3>
+          <p>İlgili kayıt ve prosedür bulunur; dil modeli kaynaklarıyla cevap verir.</p>
+        </li>
+        <li>
+          <span class="n">05</span>
+          <h3>Güncel kal</h3>
+          <p>Ertesi gün yalnız değişen kayıtlar yeniden işlenir.</p>
+        </li>
+      </ol>
+      <p class="stay">Bu süreçte verinin hiçbir parçası kurum dışına çıkmaz.</p>
+
+      <div class="outcomes-head">
+        <p class="kicker">06 · Sonuç</p>
+      </div>
+      <ul class="outcomes">
+        <li>
+          <h3>Tek bilgi kaynağı</h3>
+          <p>Dağınık veri tek akışta toplanır ve anlamına göre aranabilir hâle gelir.</p>
+        </li>
+        <li>
+          <h3>Anlamlandırılmış sayılar</h3>
+          <p>Analiz otomatik yapılır; sonuçlar doğal dilde, saniyeler içinde yorumlanır.</p>
+        </li>
+        <li>
+          <h3>Veri egemenliği</h3>
+          <p>Her şey kurum altyapısında, kapalı devre çalışır; veri dışarı çıkmaz.</p>
+        </li>
+      </ul>
+      <p class="closing-line">YakınBoğazAI, dağınık veriyi tek bir akıllı bilgi kaynağına dönüştürür. Yapay zekânın gücünden vazgeçmeden veri egemenliği kurumda kalır.</p>
+
+      <footer class="end">
+        <p>Kurum verisi dışarı çıkmadan toplanır, analiz edilir ve doğal dilde konuşulur.</p>
+        <address>
+          <strong>Yakın Boğaz</strong>
+          RTEÜ Teknopark, Rize<br />
+          Fener Mah. Atatürk Cad. No: 28/2-1<br />
+          53000 Merkez / Rize<br />
+          info@yakinbogaz.com.tr<br />
+          +90 216 987 34 53
+        </address>
+      </footer>
+    </article>
+  </main>
+</body>
+</html>

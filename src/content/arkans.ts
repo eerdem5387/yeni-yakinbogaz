@@ -1,5 +1,5 @@
-export const ykyer = {
-  name: "YKYer",
+export const arkans = {
+  name: "ARKANS",
   kicker: "Kapalı alan",
   category: "Konum, yönlendirme ve operasyon",
   headline: "Kapalı alanlarda konum, yönlendirme ve operasyon.",
@@ -31,7 +31,7 @@ export const ykyer = {
   },
   platform: {
     title: "Binanın içine konum",
-    text: "YKYer, Bluetooth vericilerle kişinin bulunduğu katı ve noktayı bulur. Harita ya da kamera üstündeki oklarla hedefe götürür. Ziyaretçi, personel ve yönetim aynı sistemde buluşur.",
+    text: "ARKANS, Bluetooth vericilerle kişinin bulunduğu katı ve noktayı bulur. Harita ya da kamera üstündeki oklarla hedefe götürür. Ziyaretçi, personel ve yönetim aynı sistemde buluşur.",
   },
   jobs: [
     {

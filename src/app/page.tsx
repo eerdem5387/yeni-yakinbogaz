@@ -6,7 +6,7 @@ import { StoreBadges } from "@/components/site/StoreBadges";
 import { projects } from "@/content/site";
 import { tafys } from "@/content/tafys";
 import { ybai } from "@/content/yakin-bogaz-ai";
-import { ykyer } from "@/content/ykyer";
+import { arkans } from "@/content/arkans";
 
 export default function Home() {
   return (
@@ -42,7 +42,7 @@ export default function Home() {
             <Drift shift={52} arrive delay={0.2}>
               <p className="max-w-md leading-relaxed text-paper/75">
                 Üç ürün, tek ekosistem. YakınBoğazAI kurum verisini dışarı çıkarmadan konuşturur.
-                YKYer kapalı alanda konum ve yön verir. TAFYS ulaşımda planlar, uygular ve izler.
+                ARKANS kapalı alanda konum ve yön verir. TAFYS ulaşımda planlar, uygular ve izler.
               </p>
             </Drift>
           </div>
@@ -147,23 +147,23 @@ export default function Home() {
       <section className="relative bg-paper pt-20 text-ink md:pt-28">
         <div className="container relative z-10">
           <Drift shift={20}>
-            <MetaRow index="03" label={ykyer.name} />
+            <MetaRow index="03" label={arkans.name} />
           </Drift>
           <Drift shift={24}>
-            <p className="mt-10 text-sm tracking-[0.16em] text-ink/45 uppercase">{ykyer.category}</p>
+            <p className="mt-10 text-sm tracking-[0.16em] text-ink/45 uppercase">{arkans.category}</p>
           </Drift>
           <div className="mt-6 grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-end">
             <Drift axis="down" shift={66}>
               <h2 className="text-[clamp(1.9rem,4vw,3.2rem)] leading-[1.06] font-medium tracking-[-0.04em]">
-                {ykyer.headline}
+                {arkans.headline}
               </h2>
             </Drift>
             <Drift shift={40}>
-              <p className="leading-relaxed text-ink/65">{ykyer.lead}</p>
+              <p className="leading-relaxed text-ink/65">{arkans.lead}</p>
             </Drift>
           </div>
           <ul className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {ykyer.jobs.map((job, index) => (
+            {arkans.jobs.map((job, index) => (
               <Drift as="li" key={job.n} shift={28 + index * 12} className="border border-ink/10 p-5">
                 <p className="text-sm tracking-[0.16em] text-ink/40">{job.n}</p>
                 <h3 className="mt-3 text-xl font-medium tracking-[-0.03em]">{job.title}</h3>
@@ -172,7 +172,7 @@ export default function Home() {
             ))}
           </ul>
           <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {ykyer.places.map((place, index) => (
+            {arkans.places.map((place, index) => (
               <Drift as="li" key={place.title} shift={32 + index * 10} className="bg-paper p-5">
                 <h3 className="font-medium tracking-[-0.02em]">{place.title}</h3>
                 <p className="mt-2 text-sm text-ink/55">{place.text}</p>
@@ -181,12 +181,12 @@ export default function Home() {
           </ul>
           <Drift shift={32}>
             <p className="mt-8 text-lg leading-snug font-medium tracking-[-0.03em]">
-              {ykyer.closing.lines.join(" ")}
+              {arkans.closing.lines.join(" ")}
             </p>
           </Drift>
           <Drift shift={18}>
-            <Link href="/projeler/ykyer" className="link-arrow mt-8">
-              YKYer’i aç
+            <Link href="/projeler/arkans" className="link-arrow mt-8">
+              ARKANS’ı aç
               <ArrowUpRight size={16} />
             </Link>
           </Drift>

@@ -7,8 +7,8 @@ export const projects = [
     ready: true,
   },
   {
-    name: "YKYer",
-    href: "/projeler/ykyer",
+    name: "ARKANS",
+    href: "/projeler/arkans",
     summary:
       "Kapalı alanlarda konum, yönlendirme ve operasyon. Bluetooth vericiler katı ve noktayı bulur; harita hedefe götürür.",
     ready: true,

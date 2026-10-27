@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function ArkansPage() {
   return (
-    <div className="bg-bg" style={{ "--bg": "#08090f" } as React.CSSProperties}>
+    <div className="bg-bg" style={{ "--bg": "#0a1222" } as React.CSSProperties}>
       <section className="relative overflow-hidden pt-28 pb-16 md:pt-32 md:pb-20">
         <div
           className="pointer-events-none absolute inset-0 opacity-70"

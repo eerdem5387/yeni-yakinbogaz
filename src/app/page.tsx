@@ -42,7 +42,7 @@ export default function Home() {
             <Drift shift={52} arrive delay={0.2}>
               <p className="max-w-md leading-relaxed text-paper/75">
                 Üç ürün, tek ekosistem. YakınBoğazAI kurum verisini dışarı çıkarmadan konuşturur.
-                ARKANS kapalı alanda konum ve yön verir. TAFYS ulaşımda planlar, uygular ve izler.
+                ARKANS büyük binalarda yolu ve günlük işi bir araya getiriyor. TAFYS ulaşımda planlar, uygular ve izler.
               </p>
             </Drift>
           </div>

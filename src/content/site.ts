@@ -10,7 +10,7 @@ export const projects = [
     name: "ARKANS",
     href: "/projeler/arkans",
     summary:
-      "Kapalı alanlarda konum, yönlendirme ve operasyon. Bluetooth vericiler katı ve noktayı bulur; harita hedefe götürür.",
+      "Kapalı alanlarda yol ve günlük işi bir araya getiriyor. Ziyaretçi, personel ve yönetim aynı binayı kendi işine göre görebiliyor.",
     ready: true,
   },
   {

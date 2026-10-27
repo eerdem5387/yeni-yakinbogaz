@@ -9,6 +9,10 @@
   --line-ink: rgba(17, 17, 19, 0.12);
 }
 
+html.arkans-canvas {
+  --bg: #08090f;
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-paper: var(--paper);
